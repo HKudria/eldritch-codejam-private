@@ -1,0 +1,22 @@
+body{
+    background-image: url("../home.png");
+    background-repeat: no-repeat no-repeat;
+    background-size: cover;
+}
+
+.container {
+    display: flex;
+}
+
+.ancientsBlock{
+    display: flex;
+    height: 100vh;
+}
+.ancientsBlock ul li{
+    margin-bottom: 15px;
+}
+
+.ancientsBlock ul img{
+    width: auto;
+    max-height: 250px;
+}
