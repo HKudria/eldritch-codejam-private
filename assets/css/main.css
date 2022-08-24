@@ -2,10 +2,28 @@ body{
     background-image: url("../home.png");
     background-repeat: no-repeat no-repeat;
     background-size: cover;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ancients{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-width: 40%;
+    padding: 20px;
+}
+
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .container {
     display: flex;
+    justify-content: space-around;
 }
 
 .ancientsBlock{
@@ -19,4 +37,77 @@ body{
 .ancientsBlock ul img{
     width: auto;
     max-height: 250px;
+}
+
+.levelsBlock {
+    display: flex;
+    align-items: center;
+}
+
+.stage{
+    margin: 10px;
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.green{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: green;
+    border-radius: 20px;
+}
+.brown{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: sandybrown;
+    border-radius: 20px;
+}
+.blue{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: lightskyblue;
+    border-radius: 20px;
+}
+
+.ancientLevelButton{
+    padding: 10px;
+    background: aliceblue;
+    margin: 10px;
+}
+
+.getCardButton{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.getCardButton span {
+    background: black;
+    color: wheat;
+    padding: 20px;
+}
+
+.getCardButton img {
+    width: auto;
+    height: 200px;
+}
+
+.findCard img {
+    width: auto;
+    height: 200px;
+}
+
+.stageSpan{
+    color: white;
 }

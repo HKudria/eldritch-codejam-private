@@ -6,10 +6,12 @@ const ancients = document.querySelector(".ancients");
 const levels = document.querySelector(".levels");
 const getCardButton = document.querySelector(".getCardButton")
 const cardRender = document.querySelector(".findCard")
+const stageStatus = document.querySelector('.status')
 let idAncient
 let difficultLevel
 
-const renderAcients = () => {
+const renderAncients = () => {
+    ancients.innerHTML = ''
     ancientsData.forEach(element => {
         ancients.innerHTML += `<li class="acientItem"><img src="${element.cardFace}" alt="${element.name}" id="${element.id}"></li>`
     })
@@ -22,7 +24,7 @@ const getAncientById = () => {
             ancient = value
         }
     })
-    return ancient
+    return JSON.parse(JSON.stringify(ancient))
 }
 
 const stageCardLength = (color) => {
@@ -77,56 +79,87 @@ const getCards = (cardsArray, arrayLength) => {
     return selectedCards
 }
 
-
 const renderHelper = () => {
-
     let greenCard = getCards(greenCards, stageCardLength("green"))
     let blueCard = getCards(blueCards, stageCardLength("blue"))
     let brownCard = getCards(brownCards, stageCardLength("brown"))
     let ancient = getAncientById()
     const renderStage = (stage) => {
         if (ancient[stage]['greenCards'] !== 0) {
-            cardRender.innerHTML = `<img src="${greenCard.pop()}" alt="test">`
+            cardRender.innerHTML = `<img src="${greenCard.splice(Math.floor(Math.random() * greenCard.length), 1)}" alt="test">`
             ancient[stage]['greenCards']--
         } else if (ancient[stage]['brownCards'] !== 0) {
-            cardRender.innerHTML = `<img src="${brownCard.pop()}" alt="test">`
+            cardRender.innerHTML = `<img src="${brownCard.splice(Math.floor(Math.random() * brownCard.length), 1)}" alt="test">`
             ancient[stage]['brownCards']--
         } else if (ancient[stage]['blueCards'] !== 0) {
-            cardRender.innerHTML = `<img src="${blueCard.pop()}" alt="test">`
+            cardRender.innerHTML = `<img src="${blueCard.splice(Math.floor(Math.random() * blueCard.length), 1)}" alt="test">`
             ancient[stage]['blueCards']--
         }
 
     }
+
+    const renderStageStatus = () => {
+        stageStatus.innerHTML = ''
+        let stage = ['firstStage', 'secondStage', 'thirdStage']
+        let stageName = ['Первая стадия', 'Вторая стадия', 'Третья стадия']
+        for (let i = 0; i < stage.length; i++) {
+            stageStatus.innerHTML += `
+            <div>
+                <span class="stageSpan">${stageName[i]}</span>
+                <div class="stage">
+                    <div class="green">${ancient[stage[i]]['greenCards']}</div>
+                    <div class="brown">${ancient[stage[i]]['brownCards']}</div>
+                    <div class="blue">${ancient[stage[i]]['blueCards']}</div>
+                </div>
+            </div>
+           `
+        }
+
+    }
+
+    renderStageStatus()
+
     getCardButton.addEventListener('click', (event) => {
+        event.preventDefault()
+        getCardButton.innerHTML = '<img src="./assets/mythicCardBackground.png" alt="getNewCard">'
         if (ancient.firstStage.greenCards !== 0 || ancient.firstStage.brownCards !== 0 || ancient.firstStage.blueCards !== 0) {
-            console.log('go here')
             renderStage('firstStage')
         } else if (ancient.secondStage.greenCards !== 0 || ancient.secondStage.brownCards !== 0 || ancient.secondStage.blueCards !== 0) {
             renderStage('secondStage')
         } else if (ancient.thirdStage.greenCards !== 0 || ancient.thirdStage.brownCards !== 0 || ancient.thirdStage.blueCards !== 0) {
             renderStage('thirdStage')
         }
-        console.log(ancient)
+        renderStageStatus()
+        if (greenCard.length === 0 && brownCard.length === 0 && blueCard.length === 0) {
+            getCardButton.innerHTML = ''
+        }
     })
+}
 
+const renderLevels = () => {
+    levels.innerHTML = ''
+    difficulties.forEach(element => {
+        levels.innerHTML += `<li class="ancientLevelButton"><span id="${element.id}">${element.name}</span></li>`
+    })
 }
 
 ancients.addEventListener('click', (evt) => {
-    evt.stopImmediatePropagation();
     idAncient = evt.target.id
+    renderAncients()
+    document.getElementById(idAncient).style.border="2px solid red"
     levels.innerHTML = ''
     getCardButton.innerHTML = ''
     cardRender.innerHTML = ''
-    difficulties.forEach(element => {
-        levels.innerHTML += `<li class="acientItem"><span id="${element.id}">${element.name}</span></li>`
-    })
+    stageStatus.innerHTML = ''
+    renderLevels()
     levels.addEventListener('click', (event) => {
-        event.stopImmediatePropagation();
+        renderLevels()
         difficultLevel = event.target.id
-        getCardButton.innerHTML = '<span>Get new card</span>'
+        document.getElementById(difficultLevel).parentElement.style.border="2px solid red"
+        cardRender.innerHTML = ''
+        getCardButton.innerHTML = '<span>Замешать колоду</span>'
         renderHelper()
     })
 })
 
-
-renderAcients();
+renderAncients();
